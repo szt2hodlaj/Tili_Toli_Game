@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="game_style.css">
+    <title>Tili-toli játék</title>
+</head>
+<body>
+    <div class="color-stripes"></div>
+<div id="game-board">
+</div>
+<div id="message"></div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+const gameBoard = document.getElementById("game-board");
+const messageBox = document.getElementById("message");
+  
+let cards = ["1", "2", "3", "4", "5", "6", "7", "8", ""];
+let emptyIndex = 8;
+
+  
+function createBoard() {
+gameBoard.innerHTML = "";
+cards.forEach((card, index) => {
+    const cardElement = document.createElement("div");
+    cardElement.innerText = card;
+    cardElement.classList.add("card");
+    if (card === "") cardElement.classList.add("empty");
+    cardElement.addEventListener("click", () => moveCard(index));
+    gameBoard.appendChild(cardElement);
+});
+}
+
+function moveCard(index) {
+if (isAdjacent(index, emptyIndex)) {
+    swapCards(index, emptyIndex);
+    emptyIndex = index;
+    createBoard();
+    if (isSolved()) showMessage("Gratulálok, megoldottad a feladványt!");
+}
+}
+
+function isAdjacent(index1, index2) {
+    const adjacentIndices = [[1, 3], [0, 2, 4], [1, 5], [0, 4, 6], [1, 3, 5, 7], [2, 4, 8], [3, 7], [4, 6, 8], [5, 7]];
+    return adjacentIndices[index2].includes(index1);
+}
+
+function swapCards(index1, index2) {
+    const temp = cards[index1];
+    cards[index1] = cards[index2];
+    cards[index2] = temp;
+}
+
+function isSolved() {
+  return cards.join("") === "12345678";
+}
+
+function showMessage(message) {
+    messageBox.innerText = message;
+}
+
+createBoard();
+});
+</script>
+</body>
+</html>
