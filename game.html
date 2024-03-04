@@ -19,16 +19,18 @@ const messageBox = document.getElementById("message");
 let cards = ["1", "2", "3", "4", "5", "6", "7", "8", ""];
 let emptyIndex = 8;
 
+shuffleCards();
+createBoard();
   
 function createBoard() {
-gameBoard.innerHTML = "";
-cards.forEach((card, index) => {
-    const cardElement = document.createElement("div");
-    cardElement.innerText = card;
-    cardElement.classList.add("card");
-    if (card === "") cardElement.classList.add("empty");
-    cardElement.addEventListener("click", () => moveCard(index));
-    gameBoard.appendChild(cardElement);
+    gameBoard.innerHTML = "";
+    cards.forEach((card, index) => {
+      const cardElement = document.createElement("div");
+      cardElement.innerText = card;
+      cardElement.classList.add("card");
+      if (card === "") cardElement.classList.add("empty");
+      cardElement.addEventListener("click", () => moveCard(index));
+      gameBoard.appendChild(cardElement);
 });
 }
 
@@ -39,6 +41,12 @@ if (isAdjacent(index, emptyIndex)) {
     createBoard();
     if (isSolved()) showMessage("Gratulálok, megoldottad a feladványt!");
 }
+}
+function shuffleCards() {
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
 }
 
 function isAdjacent(index1, index2) {
